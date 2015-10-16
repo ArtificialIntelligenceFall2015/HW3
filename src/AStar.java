@@ -6,8 +6,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class AStar {
-	List<Frontier> frontiers = new ArrayList<Frontier>();
-	List<Frontier> closer = new ArrayList<Frontier>();
+	private static List<Frontier> frontiers = new ArrayList<Frontier>();
+	private static List<Frontier> closer = new ArrayList<Frontier>();
 
 	public static void main(String[] arg) {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -19,7 +19,7 @@ public class AStar {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-        }while(!AStar.validInput(input));
+        }while(!validInput(input));
         List<Character> list=new ArrayList<Character>();
         for(char c:input)
         	list.add(c);
@@ -62,22 +62,8 @@ public class AStar {
 				Collections.swap(listCopy, spaceIndex, index);
 				int cost = frontier.getCost() + Math.abs(i);
 				Frontier frontierCopy = new Frontier(frontier, listCopy, cost);
-				boolean match = false;
-				for (Frontier f : closer) {
-					if (f.equals(frontierCopy))
-						match = true;
-				}
-				if (!match) {
-					for (Frontier f : frontiers) {
-						if (f.equals(frontierCopy)){
-							match = true;
-							if (frontierCopy.getWeight() < f.getWeight())
-								frontiers.set(frontiers.indexOf(f), frontierCopy);
-						}
-					}
-					if (!match)
-						frontiers.add(frontierCopy);
-				}
+				if (!(isContains(closer, frontierCopy)||isContains(frontiers, frontierCopy)))
+					frontiers.add(frontierCopy);
 			}
 		}
 	}
@@ -110,5 +96,16 @@ public class AStar {
 			}
 		}
 		return nWhite==0&&nBlack==0&&nSpace==0;
+	}
+	
+	private boolean isContains(List<Frontier>list,Frontier frontier){
+		for (Frontier f : list) {
+			if (f.equals(frontier)){
+				if (frontier.getWeight() < f.getWeight())//true could be only occurred when list is a reference of frontiers
+					list.set(list.indexOf(f), frontier);
+				return true;
+			}
+		}
+		return false;
 	}
 }
