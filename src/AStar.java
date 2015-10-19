@@ -8,6 +8,7 @@ import java.util.List;
 public class AStar {
 	private static List<Frontier> frontiers = new ArrayList<Frontier>();
 	private static List<Frontier> closer = new ArrayList<Frontier>();
+	private Frontier goal;
 
 	public static void main(String[] arg) {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -24,21 +25,22 @@ public class AStar {
         for(char c:input)
         	list.add(c);
         AStar hw = new AStar(list);
-		Frontier frontier = hw.run();
-		Frontier preFrontier = frontier;
-		String output="";
-		while (preFrontier != null) {
-			output=preFrontier.getList()+"\n"+output;
-			preFrontier = preFrontier.getPreFrontier();
-		}
-		System.out.println(output);
+		hw.run();
+		System.out.println("Solution:");
+		System.out.println(hw.getSolution());
+		System.out.println("\nCost:");
+		System.out.println(hw.getGoal().getWeight());
+		System.out.println("\nFrontier List:");
+		System.out.println(hw.getFrontierList());
+		System.out.println("\nCloser List:");
+		System.out.println(hw.getCloserList());
 	}
 
 	public AStar(List<Character> list) {
 		frontiers.add(new Frontier(null, list, 0));
 	}
 
-	public Frontier run() {
+	public void run() {
 		Frontier target = frontiers.remove(0);
 		while (!goal(target)) {
 			next(target);
@@ -46,7 +48,7 @@ public class AStar {
 			closer.add(target);
 			target = frontiers.remove(0);
 		}
-		return target;
+		goal=target;
 	}
 
 	private void next(Frontier frontier) {
@@ -107,5 +109,37 @@ public class AStar {
 			}
 		}
 		return false;
+	}
+	
+	public String getSolution(){
+		Frontier preFrontier = goal;
+		String output="";
+		while (preFrontier != null) {
+			output=preFrontier.getList()+"\n"+output;
+			preFrontier = preFrontier.getPreFrontier();
+		}
+		return output;
+	}
+	
+	public String getFrontierList(){
+		String output="";
+		for(int i=0; i<frontiers.size(); i++)
+			output+=i+". "+frontiers.get(i).getList()+"\n";
+		return output;
+	}
+	
+	public String getCloserList(){
+		String output="";
+		for(int i=0; i<closer.size(); i++)
+			output+=i+". "+closer.get(i).getList()+"\n";
+		return output;
+	}
+
+	public Frontier getGoal() {
+		return goal;
+	}
+
+	public void setGoal(Frontier goal) {
+		this.goal = goal;
 	}
 }
