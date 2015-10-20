@@ -39,7 +39,7 @@ public class Frontier implements Comparable<Frontier>{
 	
 	public boolean equals(Frontier arg0){
 		for(int i=0; i<list.size(); i++){
-			if(list.get(i)!=arg0.getList().get(i))
+			if(Character.toLowerCase(list.get(i))!=Character.toLowerCase(arg0.getList().get(i)))
 				return false;
 		}
 		return true;
