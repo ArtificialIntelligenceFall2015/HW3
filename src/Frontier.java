@@ -21,7 +21,7 @@ public class Frontier implements Comparable<Frontier>{
 	public int getWeight(){
 		int n=0;
 		for(int i=0; i<4; i++)
-			if(list.get(i)=='b')
+			if(Character.toLowerCase(list.get(i))=='b')
 				n++;
 		return n+cost;
 	}

@@ -73,7 +73,7 @@ public class AStar {
 	private boolean goal(Frontier frontier) {
 		int n = 0;
 		for (int i = 0; i < 4; i++)
-			if (frontier.getList().get(i) != 'b')
+			if (Character.toLowerCase(frontier.getList().get(i)) != 'b')
 				n++;
 		return n == 4;
 	}
